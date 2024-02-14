@@ -4,19 +4,56 @@
  * Print how long it took for all 3 promises to resolve.
  */
 
+const { Console } = require("console")
+
 
 function waitOneSecond() {
-
+    return new Promise(resolve => {
+        setTimeout(_ => {
+            resolve(`Function ${arguments.callee.name}() resolved.`)
+        },1000)
+    })
 }
 
 function waitTwoSecond() {
+    return new Promise(resolve => {
+        setTimeout(_ => {
+            resolve(`Function ${arguments.callee.name}() resolved.`)
+        }, 2000)
+    })
 
 }
 
 function waitThreeSecond() {
-
+    return new Promise(resolve => {
+            setTimeout(_ => {
+                resolve(`Function ${arguments.callee.name}() resolved.`)
+            },3000)
+    })
 }
 
-function calculateTime() {
 
+function waitForAll() {
+    return new Promise(resolve  => {
+        waitOneSecond().then( _ => {
+            console.log('Promise 1 resolved');
+            waitTwoSecond().then( _ => {
+                console.log('Promise 2 resolved');
+                waitThreeSecond().then(data => {
+                    console.log('Promise 3 resolved');
+                    console.log(`All promises resolved`);
+                    console.log(data);
+                    resolve(null)
+                })
+            })
+        })
+    })
+}
+
+
+function calculateTime() {
+    console.time('Total Time: ');
+    waitForAll().then(_ => {
+        console.timeLog('Total Time: ')
+    });
 }
